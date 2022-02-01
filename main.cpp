@@ -25,7 +25,7 @@ HRESULT __fastcall PresentCallback(IDXGISwapChain* pChain, UINT syncInterval, UI
     renderer->init(pChain, pDevice, pContext);
     renderer->beginFrame();
 
-    std::vector<std::wstring> words = { L"Hello there!", L"Dx11 SwapChain", L"By EchoHackCmd" };
+    std::vector<std::wstring> words = { L"Hello there!", L"Dx11 SwapChain", L"By EchoHackCmd", L"https://discord.gg/aXY8xJxtVz", L"https://github.com/EchoHackCmd/Dx11-SwapChain-Hook" };
 
     auto I = 0;
     auto textSize = 24.f;
