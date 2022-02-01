@@ -38,6 +38,7 @@ public:
 public:
     auto drawString(std::wstring, float, Vec2<float>, Color) -> void;
     auto fillRectangle(Vec4<float>, Color color) -> void;
+    auto drawRectangle(Vec4<float>, Color color, float) -> void;
 };
 
 #endif /* RENDERER_RENDERER */
