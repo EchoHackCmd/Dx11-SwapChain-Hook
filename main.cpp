@@ -28,13 +28,15 @@ HRESULT __fastcall PresentCallback(IDXGISwapChain* pChain, UINT syncInterval, UI
     std::vector<std::wstring> words = { L"Hello there!", L"Dx11 SwapChain", L"By EchoHackCmd" };
 
     auto I = 0;
+    auto textSize = 52.f;
+
     for(auto text : words) {
-        auto yOff = (I * 24.f) + 10.f;
-        auto len = renderer->getTextWidth(text);
-        auto height = renderer->getTextHeight(text);
+        auto yOff = (I * (textSize * 2)) + textSize;
+        auto len = renderer->getTextWidth(text, textSize);
+        auto height = renderer->getTextHeight(text, textSize);
 
         renderer->fillRectangle(Vec4<float>(8.f, yOff, 8.f + len, yOff + height), Color(21, 21, 21, 0.6f));
-        renderer->drawString(text, Vec2<float>(9.f, yOff), Color(255, 255, 255, 1));
+        renderer->drawString(text, textSize, Vec2<float>(9.f, yOff), Color(255, 255, 255, 1));
 
         Utils::logToDebug(std::string("Text: " + std::string(text.begin(), text.end()) + ", Height: " + std::to_string(height)));
 
