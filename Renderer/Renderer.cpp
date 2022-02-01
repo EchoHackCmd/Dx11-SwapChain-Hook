@@ -114,3 +114,12 @@ auto Renderer::fillRectangle(Vec4<float> rectPos, Color color) -> void {
     if(brush != nullptr)
         brush->Release();
 };
+
+auto Renderer::drawRectangle(Vec4<float> rectPos, Color color, float lineWidth) -> void {
+    d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color.r, color.g, color.b, color.a), &brush);
+    d2dRenderTarget->FillRectangle(D2D1::RectF(rectPos.x, rectPos.y, rectPos.z, rectPos.w), brush);
+    d2dRenderTarget->DrawRectangle(D2D1::RectF(rectPos.x, rectPos.y, rectPos.z, rectPos.w), brush, lineWidth);
+
+    if(brush != nullptr)
+        brush->Release();
+};
