@@ -40,17 +40,17 @@ auto Renderer::charToWStr(char const &c) -> std::wstring {
     return std::wstring(str.begin(), str.end());
 };
 
-auto Renderer::getTextWidth(std::wstring text) -> float {
+auto Renderer::getTextWidth(std::wstring text, float size) -> float {
     auto len = 0.f;
     
     std::for_each(text.begin(), text.end(), [&](char const &c) {
         auto wstr = this->charToWStr(c);
 
         if(wstr == L" ")
-            len += 3.9f;
+            len += (size / 2.5);
 
         IDWriteTextLayout* layout = nullptr;
-        writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 10.0f * 96.0f/72.0f, L"", &textFormat);
+        writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, size, L"", &textFormat);
         writeFactory->CreateTextLayout(wstr.c_str(), wcslen(wstr.c_str()), textFormat, 0.0f, 0.0f, &layout);
 
         DWRITE_TEXT_METRICS metrics;
@@ -68,14 +68,14 @@ auto Renderer::getTextWidth(std::wstring text) -> float {
     return len;
 };
 
-auto Renderer::getTextHeight(std::wstring text) -> float {
+auto Renderer::getTextHeight(std::wstring text, float size) -> float {
     auto height = 0.f;
 
     std::for_each(text.begin(), text.end(), [&](char const &c) {
         auto wstr = this->charToWStr(c);
 
         IDWriteTextLayout* layout = nullptr;
-        writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 10.0f * 96.0f/72.0f, L"", &textFormat);
+        writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, size, L"", &textFormat);
         writeFactory->CreateTextLayout(wstr.c_str(), wcslen(wstr.c_str()), textFormat, 0.0f, 0.0f, &layout);
 
         DWRITE_TEXT_METRICS metrics;
@@ -95,8 +95,8 @@ auto Renderer::getTextHeight(std::wstring text) -> float {
     return height;
 };
 
-auto Renderer::drawString(std::wstring text, Vec2<float> pos, Color color) -> void {
-    writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 10.0f * 96.0f/72.0f, L"", &textFormat);
+auto Renderer::drawString(std::wstring text, float size, Vec2<float> pos, Color color) -> void {
+    writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, size, L"", &textFormat);
     d2dRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color.r, color.g, color.b, 1.f), &brush);
     d2dRenderTarget->DrawText(text.c_str(), wcslen(text.c_str()), textFormat, D2D1::RectF(pos.x, pos.y, pos.x + 1000, pos.y + 1000), brush);
 
