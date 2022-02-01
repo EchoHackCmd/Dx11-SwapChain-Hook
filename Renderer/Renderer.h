@@ -30,8 +30,11 @@ public:
     auto releaseTextures() -> void;
     auto beginFrame() -> void;
     auto endFrame() -> void;
+private:
+    auto charToWStr(char const &c) -> std::wstring;
 public:
     auto getTextWidth(std::wstring) -> float;
+    auto getTextHeight(std::wstring) -> float;
 public:
     auto drawString(std::wstring, Vec2<float>, Color) -> void;
     auto fillRectangle(Vec4<float>, Color color) -> void;

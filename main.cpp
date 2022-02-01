@@ -29,11 +29,14 @@ HRESULT __fastcall PresentCallback(IDXGISwapChain* pChain, UINT syncInterval, UI
 
     auto I = 0;
     for(auto text : words) {
-        auto len = renderer->getTextWidth(text);
         auto yOff = (I * 24.f) + 10.f;
+        auto len = renderer->getTextWidth(text);
+        auto height = renderer->getTextHeight(text);
 
-        renderer->fillRectangle(Vec4<float>(8.f, yOff, 8.f + len, yOff + 16.f), Color(21, 21, 21, 0.6f));
+        renderer->fillRectangle(Vec4<float>(8.f, yOff, 8.f + len, yOff + height), Color(21, 21, 21, 0.6f));
         renderer->drawString(text, Vec2<float>(9.f, yOff), Color(255, 255, 255, 1));
+
+        Utils::logToDebug(std::string("Text: " + std::string(text.begin(), text.end()) + ", Height: " + std::to_string(height)));
 
         I++;
     };

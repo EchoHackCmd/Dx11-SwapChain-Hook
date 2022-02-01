@@ -32,18 +32,19 @@ auto Renderer::endFrame() -> void {
     d2dRenderTarget->EndDraw();
 };
 
+auto Renderer::charToWStr(char const &c) -> std::wstring {
+    std::ostringstream o;
+    o << c;
+
+    auto str = o.str();
+    return std::wstring(str.begin(), str.end());
+};
+
 auto Renderer::getTextWidth(std::wstring text) -> float {
-    auto toWStr = [](char const &c) {
-        std::ostringstream o;
-        o << c;
-
-        auto str = o.str();
-        return std::wstring(str.begin(), str.end());
-    };
-
     auto len = 0.f;
+    
     std::for_each(text.begin(), text.end(), [&](char const &c) {
-        auto wstr = toWStr(c);
+        auto wstr = this->charToWStr(c);
 
         if(wstr == L" ")
             len += 3.9f;
@@ -65,6 +66,33 @@ auto Renderer::getTextWidth(std::wstring text) -> float {
     });
     
     return len;
+};
+
+auto Renderer::getTextHeight(std::wstring text) -> float {
+    auto height = 0.f;
+
+    std::for_each(text.begin(), text.end(), [&](char const &c) {
+        auto wstr = this->charToWStr(c);
+
+        IDWriteTextLayout* layout = nullptr;
+        writeFactory->CreateTextFormat(L"Arial", NULL, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, 10.0f * 96.0f/72.0f, L"", &textFormat);
+        writeFactory->CreateTextLayout(wstr.c_str(), wcslen(wstr.c_str()), textFormat, 0.0f, 0.0f, &layout);
+
+        DWRITE_TEXT_METRICS metrics;
+        layout->GetMetrics(&metrics);
+
+        auto curr = metrics.height;
+        if(curr > height)
+            height = curr;
+
+        if(textFormat != nullptr)
+            textFormat->Release();
+        
+        if(layout != nullptr)
+            layout->Release();
+    });
+    
+    return height;
 };
 
 auto Renderer::drawString(std::wstring text, Vec2<float> pos, Color color) -> void {
