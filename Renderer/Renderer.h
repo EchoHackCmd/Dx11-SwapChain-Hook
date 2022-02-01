@@ -33,10 +33,10 @@ public:
 private:
     auto charToWStr(char const &c) -> std::wstring;
 public:
-    auto getTextWidth(std::wstring) -> float;
-    auto getTextHeight(std::wstring) -> float;
+    auto getTextWidth(std::wstring, float) -> float;
+    auto getTextHeight(std::wstring, float) -> float;
 public:
-    auto drawString(std::wstring, Vec2<float>, Color) -> void;
+    auto drawString(std::wstring, float, Vec2<float>, Color) -> void;
     auto fillRectangle(Vec4<float>, Color color) -> void;
 };
 
